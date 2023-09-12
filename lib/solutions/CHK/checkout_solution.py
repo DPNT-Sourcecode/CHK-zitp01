@@ -160,7 +160,6 @@ def calculate_best_offer(offers, basket):
                 maxValueProduct = offer['required'][maxIndexValue]
 
                 if maxValueProduct in basket:
-
                     offer_value += maxValue
                     productsRequired.append(maxValueProduct)
                     basket[maxValueProduct] -= 1
@@ -194,24 +193,38 @@ def calculate_total(basket):
     while best_offer is not None:
         # GOF Offer
         if isinstance(best_offer['offerValue'], str):
-            total += best_offer['quantity'] * price_tble[best_offer['required'][0]]
+            product = best_offer['required'][0]
+            total += best_offer['quantity'] * price_tble[product]
             
             # Remove items from basket
-            basket[best_offer['required'][0]] -= best_offer['quantity']
+            basket[product]] -= best_offer['quantity']
             basket[best_offer['offerValue']] -= 1
+
+            if basket[product] == 0:
+                del basket[product]
 
             if basket[best_offer['offerValue']] == 0:
                 del basket[best_offer['offerValue']]
-        # Money Value Offer
+        
         else:
             total += best_offer['offerValue']
+            # Multi-value Offer
+            if len(best_offer['required']) == 1:
+                product = best_offer['required'][0]
+                basket[product] -= best_offer['quantity']
 
-            for product in best_offer['required']:
-                basket[product] -= 1
+                # Remove from basket
+                if basket[product] == 0:
+                    del basket[product]
 
-        # Remove from basket
-        if basket[product] == 0:
-            del basket[product]
+            # Group Offer
+            else:
+                for product in best_offer['required']:
+                    basket[product] -= 1
+
+                    # Remove from basket
+                    if basket[product] == 0:
+                        del basket[product]
 
         best_offer = calculate_best_offer(extractedOffers, basket)
 
@@ -243,6 +256,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
