@@ -125,7 +125,7 @@ def extract_offers(offer_str):
 def getEligibleOffers(offers, basket):
     result = []
     for offer in offers:
-        if offer['required'] in basket and int(offer['quantity']) <= basket[offer['required']]:
+        if offer['required'] in basket and offer['quantity'] <= basket[offer['required']]:
             if isinstance(offer['offerValue'], str):
                 if offer['offerValue'] in basket and basket[offer['offerValue']] > 0:
                     result.append(offer)
@@ -165,14 +165,14 @@ def calculate_total(basket):
     while best_offer is not None:
         product = best_offer[1]
         if isinstance(best_offer['offerValue'], str):
-            total += best_offer['quantity'] * price_tble[best_offer[1]]
-            basket[best_offer[2]] -= 1
+            total += best_offer['quantity'] * price_tble[best_offer['required']]
+            basket[best_offer['offerValue']] -= 1
             if basket[best_offer[2]] == 0:
-                del basket[best_offer[2]]
+                del basket[best_offer['offerValue']]
         else:
-            total += int(best_offer[2])
+            total += best_offer['offerValue']
 
-        basket[product] -= int(best_offer[0])
+        basket[product] -= best_offer['quantity']
 
         # Remove from basket
         if basket[product] == 0:
@@ -190,7 +190,7 @@ def calculate_total(basket):
 # skus = unicode string
 def checkout(skus):
     # Validate legal input
-    if not isinstance(skus, str)and not skus.isalpha() and len(skus) > 0:
+    if not isinstance(skus, str) and not skus.isalpha() and len(skus) > 0:
         return -1
     if len(skus) == 0:
         return 0
@@ -208,6 +208,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
