@@ -50,11 +50,23 @@ def extract_offers(offer_str):
             offers.append([int(offer[0]), offer[1], offer[2]])
     return offers
 
+def getEligibleOffers(offers, basket):
+    result = []
+    for offer in offers:
+        if offer[1] in basket and offer[0] <= basket[offer[1]]:
+            if offer[2].isalpha():
+                if offer[2] in basket and basket[offer[2]] > 0:
+                    result.append(offer)
+            else:
+                result.append(offer)
+    return result
+    #mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
+    #gof_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
+
+
 # Calculate best offer value to apply
-def calculate_best_offer(mv_offers, gof_offers, basket):
-    mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
-    gof_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
-    offers = mv_offers + gof_offers
+def calculate_best_offer(offers, basket):
+
     best_offer = None
     max_offer_value = 0
     for [q, p, val] in offers:
@@ -78,11 +90,10 @@ def calculate_total(basket):
     offer_str = ','.join(list(offers.values()))
     offers = extract_offers(offer_str)
     # Get best special offer
-    best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
+    best_offer = calculate_best_offer(offers, basket)
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        print(best_offer, basket, total)
         product = best_offer[1]
         if best_offer[2].isalpha():
             total += int(best_offer[0]) * price_tble[best_offer[1]]
@@ -98,7 +109,7 @@ def calculate_total(basket):
         if basket[product] == 0:
             del basket[product]
 
-        best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
+        best_offer = calculate_best_offer(offers, basket)
 
     print(basket, total)
     # Add normal priced items to total
@@ -130,5 +141,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
