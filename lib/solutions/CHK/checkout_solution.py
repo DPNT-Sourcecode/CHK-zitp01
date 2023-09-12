@@ -53,24 +53,24 @@ def extract_mv_offers(offer_str):
 }
 '''
 
+[('2', 'B', 'E'), ('3', 'E', 'B')]
+
 def calculate_best_offer(mv_offers, gof_offers, basket):
-    # Get eligible offers where offer quantity exists in basket
     mv_offers = list(filter(lambda x: (int(x[0]) <= basket[x[1]]), mv_offers))
     gof_offers = list(filter(lambda x: (int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
-
     offers = mv_offers + gof_offers
     best_offer = None
     max_offer_value = 0
-    for offer in offers:
-        if offer[2].isalpha():
-            offer_value = price_tble[offer[2]]
+    for [q, p, val] in offers:
+        if val.isalpha():
+            offer_value = price_tble[val]
         else:
-            offer_value = (int(offer[0]) * price_tble[offer[1]]) - int(offer[2])
+            offer_value = (int(q) * price_tble[p]) - int(val)
 
         # Get max offer value
         if offer_value > max_offer_value:
             max_offer_value = offer_value
-            best_offer = offer
+            best_offer = [q, p, val]
 
     return best_offer
 
@@ -83,20 +83,26 @@ def calculate_total(basket):
     mv_offers = extract_mv_offers(offer_str)
     gof_offers = extract_gof_offers(offer_str)
 
-    for product, quantity in basket.items():
-        # Check if product is eligible for special offers
-        if product in offers:
-            best_offer = calculate_best_offer(mv_offers, gof_offers, product, basket)
+    while basket:
+        # Get best special offer
+        best_offer = calculate_best_offer(mv_offers, gof_offers)
             
-            # Apply best special offer value to total/basket
-            while best_offer is not None:
-                if best_offer[2].isalpha():
-                    basket[best_offer[2]] -= 1
-                else:
-                    total += int(best_offer[2])
-                    quantity -= int(best_offer[0])
+        # Apply special offer values to total/basket
+        while best_offer is not None:
+            product = best_offer[1]
+            if best_offer[2].isalpha():
+                basket[best_offer[2]] -= 1
+                if basket[best_offer[2]] == 0:
+                    del basket[best_offer[2]]
+            else:
+                total += int(best_offer[2])
+                quantity -= int(best_offer[0])
 
-                best_offer = calculate_best_offer(mv_offers, gof_offers, quantity, basket)
+            # If product quantity is 0
+            if basket[best_offer[1]] == 0:
+                del basket[best_offer[1]]
+
+            best_offer = calculate_best_offer(mv_offers, gof_offers)
             
         # Add price value to total
         total += quantity * price_tble[product]
