@@ -55,4 +55,3 @@ def checkout(skus):
             basket[product] = 1
 
     raise NotImplementedError()
-
