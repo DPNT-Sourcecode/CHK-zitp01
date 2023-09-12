@@ -35,9 +35,13 @@ offers = {
 def extract_offers(offer_str):
     reg_exp1 = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
     reg_exp2 = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
-    offers1 = reg_exp1.findall(offer_str)
-    offers2 = reg_exp2.findall(offer_str)
-    return list(offers1), list(offers2)
+    extractedOffers1 = reg_exp1.findall(offer_str)
+    extractedOffers2 = reg_exp2.findall(offer_str)
+
+    offers = []
+    for offer in extractedOffers1:
+
+    return offers
 
 # Calculate best offer value to apply
 def calculate_best_offer(mv_offers, gof_offers, basket):
@@ -65,8 +69,7 @@ def calculate_best_offer(mv_offers, gof_offers, basket):
 def calculate_total(basket):
     total = 0
     offer_str = ','.join(list(offers.values()))
-    mv_offers,  = extract_offers(offer_str)
-    gof_offers = extract_gof_offers(offer_str)
+    offers = extract_offers(offer_str)
     # Get best special offer
     best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
         
@@ -120,3 +123,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
