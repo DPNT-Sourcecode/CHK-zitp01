@@ -78,15 +78,17 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        print(best_offer, basket)
+        print(best_offer, basket, total)
         product = best_offer[1]
         if best_offer[2].isalpha():
+            total += int(best_offer[0]) * price_tble[best_offer[1]]
             basket[best_offer[2]] -= 1
             if basket[best_offer[2]] == 0:
                 del basket[best_offer[2]]
         else:
             total += int(best_offer[2])
-            basket[product] -= int(best_offer[0])
+
+        basket[product] -= int(best_offer[0])
 
         # Remove from basket
         if basket[product] == 0:
