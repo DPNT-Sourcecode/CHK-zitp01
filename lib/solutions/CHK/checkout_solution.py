@@ -170,6 +170,7 @@ def calculate_best_offer(offers, basket):
                     n += 1
                 
             offer_value -= offer['offerValue']
+            print(productsRequired, "\n")
 
         # Get max offer value
         if offer_value > max_offer_value:
@@ -191,8 +192,6 @@ def calculate_total(basket):
     extractedOffers = extract_offers(offer_str)
     # Get best special offer
     best_offer = calculate_best_offer(extractedOffers, basket)
-    print(best_offer)
-    print(basket)
         
     # Apply special offer values to total/basket
     while best_offer is not None:
@@ -231,7 +230,6 @@ def calculate_total(basket):
                     if basket[product] == 0:
                         del basket[product]
 
-        print(best_offer, total, basket)
         best_offer = calculate_best_offer(extractedOffers, basket)
 
     # Add normal priced items to total
@@ -262,6 +260,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
