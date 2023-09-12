@@ -94,30 +94,25 @@ def extract_offers(offer_str):
     for offer in mv_offers:
         offers.append({
             'quantity': int(offer[0]),
-            'required': offer[1], 
+            'required': set([offer[1]]), 
             'offerValue': int(offer[2])
         })
     
     for offer in bundle_offers:
         print(offer[1])
-        offers.append({
-            'quantity': offer[0],
-            'required': offer[1], 
-            'offerValue': offer[2]
-        })
 
     for offer in gof_offers:
         if offer[1] == offer[2]:
             price = int(offer[0]) * price_tble[offer[1]]
             offers.append({
                 'quantity': int(offer[0])+1,
-                'required': offer[1],
+                'required': set([offer[1]]),
                 'offerValue': price
             })
         else:
             offers.append({
                 'quantity': int(offer[0]),
-                'required': offer[1],
+                'required': set([offer[1]]),
                 'offerValue': offer[2]
             })
     return offers
@@ -125,6 +120,7 @@ def extract_offers(offer_str):
 def getEligibleOffers(offers, basket):
     result = []
     for offer in offers:
+
         if offer['required'] in basket and offer['quantity'] <= basket[offer['required']]:
             if isinstance(offer['offerValue'], str):
                 if offer['offerValue'] in basket and basket[offer['offerValue']] > 0:
