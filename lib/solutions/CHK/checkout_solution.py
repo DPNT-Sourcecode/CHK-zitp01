@@ -85,7 +85,8 @@ offers = {
 def extract_offers(offer_str):
     reg_exp1 = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
     reg_exp2 = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
-    reg_exp3 = re.compile(r'buy any ([0-9]+) of \([A-Z]\) for ([0-9]+)')
+    reg_exp3 = re.compile(r'[A-Za-z]+(?:,[A-Za-z]+)*')
+    #reg_exp3 = re.compile(r'buy any ([0-9]+) of (\([A-Z]+(?:,[A-Z]+\)) for ([0-9]+)')
     gof_offers = reg_exp1.findall(offer_str)
     mv_offers = reg_exp2.findall(offer_str)
     bundle_offers = reg_exp3.findall(offer_str)
@@ -265,8 +266,3 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
-
-
-
-
-
