@@ -46,13 +46,6 @@ def extract_mv_offers(offer_str):
     return list(offers)
 
 # Calculate best offer value to apply
-'''
-{
-    B: 2
-    E: 4
-}
-'''
-
 def calculate_best_offer(mv_offers, gof_offers, basket):
     mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
     gof_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
@@ -85,6 +78,7 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
+        print(best_offer, basket)
         product = best_offer[1]
         if best_offer[2].isalpha():
             basket[best_offer[2]] -= 1
@@ -100,10 +94,12 @@ def calculate_total(basket):
 
         best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
 
+    print(basket, total)
     # Add normal priced items to total
     for product, quantity in basket.items():
         total += quantity * price_tble[product]
 
+    print(total)
     return total
 
 # noinspection PyUnusedLocal
