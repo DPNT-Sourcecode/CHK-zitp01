@@ -14,7 +14,6 @@ Our price table and offers:
 +------+-------+------------------------+
 '''
 
-
 # Define price and special offers
 price_tble = {
     'A': 50,
