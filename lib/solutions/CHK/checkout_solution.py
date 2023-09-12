@@ -93,11 +93,11 @@ def calculate_total(basket):
                     quantity -= int(best_offer[0])
 
                 best_offer = calculate_best_offer(mv_offers, gof_offers, quantity, basket)
+                print('after', product, quantity, best_offer)
             
         # Add price value to total
         total += quantity * price_tble[product]
-        quantity -= quantity
-
+        print(total)
 
     return total
 
@@ -123,6 +123,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
