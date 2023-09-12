@@ -163,7 +163,7 @@ def calculate_best_offer(offers, basket):
             offer_value = 0
             nCount = 0
             # Calculate the max value combination of products for offer
-            while nCount < offer['quantity']:
+            while nCount < offer['quantity'] and len(productsRequiredValues) > 0:
                 maxValue = max(productsRequiredValues)
                 maxIndexValue = productsRequiredValues.index(maxValue)
                 maxValueProduct = offer['required'][maxIndexValue]
@@ -177,16 +177,18 @@ def calculate_best_offer(offers, basket):
                     # Remove from basket if used up
                     if basket[maxValueProduct] == 0:
                         del basket[maxValueProduct]
-
+                else:
+                    productsRequiredValues.remove(maxValue)
+                
             offer_value -= offer['offerValue']
             offer['required'] = productsRequired
+            print(offer)
 
         # Get max offer value
         if offer_value > max_offer_value:
             max_offer_value = offer_value
             best_offer = offer
 
-    print(best_offer)
     return best_offer
 
 
@@ -266,5 +268,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
