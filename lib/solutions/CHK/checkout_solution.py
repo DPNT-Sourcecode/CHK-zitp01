@@ -88,17 +88,38 @@ def extract_offers(offer_str):
     reg_exp3 = re.compile(r'buy any ([0-9]+) of ([A-Z,]+) for ([0-9]+)')
     gof_offers = reg_exp1.findall(offer_str)
     mv_offers = reg_exp2.findall(offer_str)
+    bundle_offers = reg_exp3.findall(offer_str)
 
     offers = []
     for offer in mv_offers:
-        offers.append([offer[0], offer[1], offer[2]])
+        offers.append({
+            'quantity': offer[0],
+            'required': offer[1], 
+            'offerValue': offer[2]
+        })
+    
+    for offer in bundle_offers:
+        print(offer[1])
+        offers.append({
+            'quantity': offer[0],
+            'required': offer[1], 
+            'offerValue': offer[2]
+        })
 
     for offer in gof_offers:
         if offer[1] == offer[2]:
             price = str(int(offer[0]) * price_tble[offer[1]])
-            offers.append([str(int(offer[0])+1), offer[1], price])
+            offers.append({
+                'quantity': str(int(offer[0])+1),
+                'required': offer[1],
+                'offerValue': price
+            })
         else:
-            offers.append([offer[0], offer[1], offer[2]])
+            offers.append({
+                'quantity': offer[0],
+                'required': offer[1],
+                'offerValue': offer[2]
+            })
     return offers
 
 def getEligibleOffers(offers, basket):
@@ -187,3 +208,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
