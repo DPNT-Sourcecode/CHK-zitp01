@@ -145,10 +145,10 @@ def getEligibleOffers(offers, basket):
 # Calculate best offer value to apply
 def calculate_best_offer(offers, basket):
     offers = getEligibleOffers(offers, basket)
-    print(offers)
     best_offer = None
     max_offer_value = 0
     for offer in offers:
+        productsRequired = offer['required']
         # GOF Offer
         if isinstance(offer['offerValue'], str):
             offer_value = price_tble[offer['offerValue']]
@@ -163,14 +163,13 @@ def calculate_best_offer(offers, basket):
             # Calculate the max value combination of products for offer
             for product in offer['required']:
                 n = 0
-                while nCount < offer['quantity'] and n < basket[product]:
+                while nCount < offer['quantity'] and product in basket and n < basket[product]:
                     offer_value += price_tble[product]
                     productsRequired.append(product)
                     nCount += 1
                     n += 1
                 
             offer_value -= offer['offerValue']
-            print(productsRequired, "\n")
 
         # Get max offer value
         if offer_value > max_offer_value:
@@ -260,6 +259,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
