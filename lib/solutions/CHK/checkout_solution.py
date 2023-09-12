@@ -102,13 +102,13 @@ def extract_offers(offer_str):
         if offer[1] == offer[2]:
             offers.append({
                 'quantity': int(offer[0])+1,
-                'required': [offer[1]],
+                'required': [offer[1] * int(offer[0])+1],
                 'offerValue': int(offer[0]) * price_tble[offer[1]]
             })
         else:
             offers.append({
                 'quantity': int(offer[0]),
-                'required': [offer[1]],
+                'required': [offer[1] * int(offer[0])],
                 'offerValue': offer[2]
             })
     return offers
@@ -193,12 +193,12 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        requiredProducts = list(best_offer['required'])
         # GOF Offer
         if isinstance(best_offer['offerValue'], str):
-            total += best_offer['quantity'] * price_tble[requiredProducts[0]]
+            total += best_offer['quantity'] * price_tble[best_offer['required'][0]]
             
-            # Remove free item from basket
+            # Remove items from basket
+            basket[best_offer['required'][0]] -= best_offer['quantity']
             basket[best_offer['offerValue']] -= 1
 
             if basket[best_offer['offerValue']] == 0:
@@ -207,8 +207,8 @@ def calculate_total(basket):
         else:
             total += best_offer['offerValue']
 
-        for product in requiredProducts:
-            basket[product] -= best_offer['quantity']
+            for product in best_offer['required']:
+                basket[product] -= 1
 
         # Remove from basket
         if basket[product] == 0:
