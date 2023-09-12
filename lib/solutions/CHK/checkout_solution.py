@@ -72,8 +72,9 @@ def calculate_total(basket):
     for product in basket.keys():
         quantity = basket[product]
         print(quantity)
-        # Check if product is eligible for special offers
-        if product in offers:
+        while quantity > 0:
+            # Check if product is eligible for special offers
+            if product in offers:
                 # Get eligible offers
                 offer_str = offers[product]
                 mv_offers = extract_mv_offers(offer_str, quantity)
@@ -90,8 +91,10 @@ def calculate_total(basket):
                         total += int(best_offer[2])
                         quantity -= int(best_offer[0])
 
-        # Add price value to total
-        total += quantity * price_tble[product]
+            # Add price value to total
+            total += quantity * price_tble[product]
+            quantity -= quantity
+
 
     return total
 
@@ -117,3 +120,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
