@@ -26,25 +26,58 @@ offers = {
     'E': '2E get one B free'
 }
 
-def extractOffer(offer_str):
+# Return eligible get one free offers - based on product quantity
+def extract_gof_offers(offer_str, quantity):
+    reg_exp = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
+    offers = reg_exp.findall(offer_str)
+    return filter(lambda x: (x <= quantity), offers)
+
+# Return eligible multi value offers - based on product quantity
+def extract_mv_offers(offer_str, quantity):
     reg_exp = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
-    offer = reg_exp.fullmatch(offer_str)
-    return offer.groups() if offer else None
+    offers = reg_exp.findall(offer_str)
+    return filter(lambda x: (x <= quantity), offers)
+
+# Calculate best offer value to apply
+def calculate_best_offer(offers):
+    best_offer = None
+    max_offer_value = 0
+    for offer in offers:
+        if offer[2].isalpha():
+            offer_value = price_tble[offer[2]]
+        else:
+            offer_value = (offer[0] + (offer[1] * price_tble[offer[0]])) - offer[2]
+
+        # Get max offer value
+        if offer_value > max_offer_value:
+            max_offer_value = offer_value
+            best_offer = offer
+
+    return best_offer
+
 
 # basket - dictionary of products and quantity
 # Returns integer value - total price of products
 def calculate_total(basket):
     total = 0
     for product, quantity in basket.items():
+        # Skip item
+        if quantity == 0:
+            continue
         # Check if product qualifies for special offer
         if product in offers:
+            # Get eligible offers
             offer_str = offers[product]
-            offer = extractOffer(offer_str)
-            # Check quantity matches offer
-            while offer is not None and quantity >= int(offer[0]):
-                # Add special offer value to total
-                total += int(offer[2])
-                quantity -= int(offer[0])
+            mv_offers = extract_mv_offers(offer_str)
+            gof_offers = extract_gof_offers(offer_str)
+            best_offer = calculate_best_offer(mv_offers + gof_offers)
+
+            # Apply special offer value to total/basket
+            if best_offer[2].isalpha():
+                basket[product] -= 1
+            else:
+                total += int(best_offer[2])
+                quantity -= int(best_offer[0])
 
         # Add price value to total
         total += quantity * price_tble[product]
