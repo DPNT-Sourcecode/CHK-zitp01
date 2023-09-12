@@ -62,10 +62,9 @@ def calculate_best_offer(offers):
 def calculate_total(basket):
     total = 0
     for product, quantity in basket.items():
-        # Skip item
         if quantity == 0:
             continue
-        # Check if product qualifies for special offer
+        # Check if product is eligible for special offers
         if product in offers:
             # Get eligible offers
             offer_str = offers[product]
@@ -73,7 +72,7 @@ def calculate_total(basket):
             gof_offers = extract_gof_offers(offer_str, quantity)
             best_offer = calculate_best_offer(mv_offers + gof_offers)
 
-            # Apply special offer value to total/basket
+            # Apply best special offer value to total/basket
             if best_offer is not None:
                 if best_offer[2].isalpha():
                     basket[best_offer[2]] -= 1
@@ -83,7 +82,6 @@ def calculate_total(basket):
 
         # Add price value to total
         total += quantity * price_tble[product]
-        print(total)
 
     return total
 
@@ -109,6 +107,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
