@@ -172,16 +172,18 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        product = best_offer['required']
+        requiredProducts = best_offer['required']
         if isinstance(best_offer['offerValue'], str):
-            total += best_offer['quantity'] * price_tble[product]
+            total += best_offer['quantity'] * price_tble[requiredProducts[0]]
             basket[best_offer['offerValue']] -= 1
+            # Remove from basket if quantity is 0
             if basket[best_offer['offerValue']] == 0:
                 del basket[best_offer['offerValue']]
         else:
             total += best_offer['offerValue']
 
-        basket[product] -= best_offer['quantity']
+        for product in requiredProducts:
+            basket[product] -= best_offer['quantity']
 
         # Remove from basket
         if basket[product] == 0:
@@ -217,5 +219,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
