@@ -14,6 +14,15 @@ class TestCheckout():
     def test_checkout_with_duplicates(self):
         assert checkout_solution.checkout("ABCCAD") == 185
 
+    def test_checkout_with_duplicates2(self):
+        assert checkout_solution.checkout("AAAAAAAA") == 330
+
+    def test_checkout_with_duplicates3(self):
+        assert checkout_solution.checkout("AAAAAAAAA") == 380
+
+    def test_checkout_with_duplicates4(self):
+        assert checkout_solution.checkout("AAAAAAAAAA") == 450 
+
     def test_checkout_with_mv_offers1(self):
         assert checkout_solution.checkout("AAABDBB") == 220
 
@@ -28,3 +37,4 @@ class TestCheckout():
     
     def test_checkout_with_mv_and_gof_offers(self):
         assert checkout_solution.checkout("EAEBAA") == 210
+

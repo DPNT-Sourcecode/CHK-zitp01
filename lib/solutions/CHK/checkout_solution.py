@@ -13,6 +13,14 @@ Our price table and offers:
 +------+-------+------------------------+
 '''
 
+'''
+    - {"method":"checkout","params":["AAAAAAAA"],"id":"CHK_R2_020"}, expected: 330, got: 350
+    - {"method":"checkout","params":["AAAAAAAAA"],"id":"CHK_R2_021"}, expected: 380, got: 400
+    - {"method":"checkout","params":["AAAAAAAAAA"],"id":"CHK_R2_022"}, expected: 400, got: 450
+'''
+
+
+
 # Define price and special offers
 price_tble = {
     'A': 50,
@@ -108,6 +116,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
