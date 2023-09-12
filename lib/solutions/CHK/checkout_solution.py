@@ -31,13 +31,13 @@ offers = {
 def extract_gof_offers(offer_str, quantity):
     reg_exp = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
     offers = reg_exp.findall(offer_str)
-    return filter(lambda x: (x <= quantity), offers)
+    return list(filter(lambda x: (int(x[0]) <= quantity), offers))
 
 # Return eligible multi value offers - based on product quantity
 def extract_mv_offers(offer_str, quantity):
     reg_exp = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
     offers = reg_exp.findall(offer_str)
-    return filter(lambda x: (x <= quantity), offers)
+    return list(filter(lambda x: (int(x[0]) <= quantity), offers))
 
 # Calculate best offer value to apply
 def calculate_best_offer(offers):
@@ -69,8 +69,8 @@ def calculate_total(basket):
         if product in offers:
             # Get eligible offers
             offer_str = offers[product]
-            mv_offers = extract_mv_offers(offer_str)
-            gof_offers = extract_gof_offers(offer_str)
+            mv_offers = extract_mv_offers(offer_str, quantity)
+            gof_offers = extract_gof_offers(offer_str, quantity)
             best_offer = calculate_best_offer(mv_offers + gof_offers)
 
             # Apply special offer value to total/basket
