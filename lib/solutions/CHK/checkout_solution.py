@@ -147,6 +147,7 @@ def getEligibleOffers(offers, basket):
 # Calculate best offer value to apply
 def calculate_best_offer(offers, basket):
     offers = getEligibleOffers(offers, basket)
+    print(offers)
     best_offer = None
     max_offer_value = 0
     for offer in offers:
@@ -232,6 +233,7 @@ def calculate_total(basket):
                     if basket[product] == 0:
                         del basket[product]
 
+        print(best_offer, total, basket)
         best_offer = calculate_best_offer(extractedOffers, basket)
 
     # Add normal priced items to total
@@ -262,4 +264,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
