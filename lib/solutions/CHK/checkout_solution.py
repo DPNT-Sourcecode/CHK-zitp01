@@ -69,12 +69,11 @@ def calculate_best_offer(offers):
 # Returns integer value - total price of products
 def calculate_total(basket):
     total = 0
-    for product, quantity in basket.items():
-        if quantity == 0:
-            continue
+    for product in basket.keys():
+        quantity = basket[product]
+        print(quantity)
         # Check if product is eligible for special offers
         if product in offers:
-            while quantity > 0:
                 # Get eligible offers
                 offer_str = offers[product]
                 mv_offers = extract_mv_offers(offer_str, quantity)
