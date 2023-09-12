@@ -53,19 +53,17 @@ def extract_offers(offer_str):
 def getEligibleOffers(offers, basket):
     result = []
     for offer in offers:
-        if offer[1] in basket and offer[0] <= basket[offer[1]]:
+        if offer[1] in basket and int(offer[0]) <= basket[offer[1]]:
             if offer[2].isalpha():
                 if offer[2] in basket and basket[offer[2]] > 0:
                     result.append(offer)
             else:
                 result.append(offer)
     return result
-    #mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
-    #gof_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
-
 
 # Calculate best offer value to apply
 def calculate_best_offer(offers, basket):
+    offers = getEligibleOffers(offers, basket)
     best_offer = None
     max_offer_value = 0
     for [q, p, val] in offers:
@@ -138,6 +136,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
