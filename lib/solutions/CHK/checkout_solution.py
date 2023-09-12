@@ -45,6 +45,12 @@ def extract_mv_offers(offer_str):
     offers = reg_exp.findall(offer_str)
     return list(offers)
 
+def extract_mv_offers2(offer_str):
+    reg_exp = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
+    offers = reg_exp.findall(offer_str)
+    return list(offers)
+
+
 # Calculate best offer value to apply
 def calculate_best_offer(mv_offers, gof_offers, basket):
     mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
@@ -126,3 +132,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
