@@ -111,6 +111,14 @@ def extract_offers(offer_str):
                 'required': [offer[1]],
                 'offerValue': offer[2]
             })
+
+    for offer in bundle_offers:
+        offers.append({
+            'quantity': int(offer[0]),
+            'required': [],
+            'offerValue': int(offer[2])
+        })
+
     return offers
 
 def getEligibleOffers(offers, basket):
@@ -197,7 +205,7 @@ def calculate_total(basket):
             total += best_offer['quantity'] * price_tble[product]
             
             # Remove items from basket
-            basket[product]] -= best_offer['quantity']
+            basket[product] -= best_offer['quantity']
             basket[best_offer['offerValue']] -= 1
 
             if basket[product] == 0:
