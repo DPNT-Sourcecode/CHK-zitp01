@@ -39,14 +39,12 @@ def extract_gof_offers(offer_str):
 
 # Return eligible multi value offers - based on product quantity
 def extract_mv_offers(offer_str):
-    reg_exp1 = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
-    reg_exp2 = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
-    offers1 = reg_exp1.findall(offer_str)
-    offers2 = reg_exp2.findall(offer_str)
-    offers2 = [(3, offer[1], 2 * price_tble[offer[1]]) for offer in list(offers2)]
-    return list(offers) + offers2
+    reg_exp = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
+    offers = reg_exp.findall(offer_str)
+    return list(offers)
 
 def extract_mv_offers2(offer_str):
+    reg_exp = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
     offers = reg_exp.findall(offer_str)
     return list(offers)
 
@@ -79,7 +77,6 @@ def calculate_total(basket):
     offer_str = ','.join(list(offers.values()))
     mv_offers = extract_mv_offers(offer_str)
     gof_offers = extract_gof_offers(offer_str)
-    print(mv_offers)
     # Get best special offer
     best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
         
@@ -133,5 +130,3 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
-
-
