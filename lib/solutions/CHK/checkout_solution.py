@@ -57,7 +57,6 @@ def calculate_best_offer(mv_offers, gof_offers, basket):
     mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
     gof_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
     offers = mv_offers + gof_offers
-    print(basket)
     best_offer = None
     max_offer_value = 0
     for [q, p, val] in offers:
@@ -79,16 +78,13 @@ def calculate_best_offer(mv_offers, gof_offers, basket):
 def calculate_total(basket):
     total = 0
     offer_str = ','.join(list(offers.values()))
-    print(offer_str)
     mv_offers = extract_mv_offers(offer_str)
     gof_offers = extract_gof_offers(offer_str)
-    print(mv_offers, gof_offers)
     # Get best special offer
     best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        print(best_offer)
         product = best_offer[1]
         if best_offer[2].isalpha():
             basket[best_offer[2]] -= 1
@@ -96,15 +92,14 @@ def calculate_total(basket):
                 del basket[best_offer[2]]
         else:
             total += int(best_offer[2])
-            quantity -= int(best_offer[0])
+            basket[product] -= int(best_offer[0])
 
-        # If product quantity is 0
+        # Remove from basket
         if basket[product] == 0:
             del basket[product]
 
         best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
 
-    print(basket)
     # Add normal priced items to total
     for product, quantity in basket.items():
         total += quantity * price_tble[product]
