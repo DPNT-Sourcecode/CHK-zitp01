@@ -146,8 +146,7 @@ def calculate_best_offer(offers, basket):
             offer_value = price_tble[offer['offerValue']]
         # Multi-value Offer
         elif len(offer['required']) == 1:
-            productsRequiredValues = [offer['quantity'] * price_tble[product] for product in offer['required']]
-            offer_value = sum(productsRequiredValues) - offer['offerValue']
+            offer_value = (offer['quantity'] * price_tble[offer['required'][0]]) - offer['offerValue']
         # Group offer
         else:
             productsRequired = []
@@ -244,5 +243,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
