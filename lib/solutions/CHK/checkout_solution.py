@@ -40,14 +40,14 @@ def extract_offers(offer_str):
 
     offers = []
     for offer in mv_offers:
-        offers.append([int(offer[0]), offer[1], int(offer[2])])
+        offers.append([offer[0], offer[1], offer[2]])
 
     for offer in gof_offers:
         if offer[1] == offer[2]:
-            price = 2 * price_tble[offer[1]]
-            offers.append([3, offer[1], price])
+            price = str(2 * price_tble[offer[1]])
+            offers.append(['3', offer[1], price])
         else:
-            offers.append([int(offer[0]), offer[1], offer[2]])
+            offers.append([offer[0], offer[1], offer[2]])
     return offers
 
 def getEligibleOffers(offers, basket):
@@ -66,7 +66,6 @@ def getEligibleOffers(offers, basket):
 
 # Calculate best offer value to apply
 def calculate_best_offer(offers, basket):
-
     best_offer = None
     max_offer_value = 0
     for [q, p, val] in offers:
@@ -88,9 +87,9 @@ def calculate_best_offer(offers, basket):
 def calculate_total(basket):
     total = 0
     offer_str = ','.join(list(offers.values()))
-    offers = extract_offers(offer_str)
+    extractedOffers = extract_offers(offer_str)
     # Get best special offer
-    best_offer = calculate_best_offer(offers, basket)
+    best_offer = calculate_best_offer(extractedOffers, basket)
         
     # Apply special offer values to total/basket
     while best_offer is not None:
@@ -109,14 +108,12 @@ def calculate_total(basket):
         if basket[product] == 0:
             del basket[product]
 
-        best_offer = calculate_best_offer(offers, basket)
+        best_offer = calculate_best_offer(extractedOffers, basket)
 
-    print(basket, total)
     # Add normal priced items to total
     for product, quantity in basket.items():
         total += quantity * price_tble[product]
 
-    print(total)
     return total
 
 # noinspection PyUnusedLocal
@@ -141,6 +138,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
