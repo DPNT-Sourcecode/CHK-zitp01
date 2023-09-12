@@ -37,13 +37,13 @@ offers = {
 def extract_gof_offers(offer_str):
     reg_exp = re.compile(r'([0-9]+)([A-Z]) get one ([A-Z]) free')
     offers = reg_exp.findall(offer_str)
-    return offers
+    return list(offers)
 
 # Return eligible multi value offers - based on product quantity
 def extract_mv_offers(offer_str):
     reg_exp = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
     offers = reg_exp.findall(offer_str)
-    return offers
+    return list(offers)
 
 # Calculate best offer value to apply
 '''
@@ -54,9 +54,10 @@ def extract_mv_offers(offer_str):
 '''
 
 def calculate_best_offer(mv_offers, gof_offers, basket):
-    mv_offers = list(filter(lambda x: (x[0] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
-    gof_offers = list(filter(lambda x: (x[0] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
+    mv_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
+    gof_offers = list(filter(lambda x: (x[1] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
     offers = mv_offers + gof_offers
+    print(basket)
     best_offer = None
     max_offer_value = 0
     for [q, p, val] in offers:
@@ -78,9 +79,10 @@ def calculate_best_offer(mv_offers, gof_offers, basket):
 def calculate_total(basket):
     total = 0
     offer_str = ','.join(list(offers.values()))
+    print(offer_str)
     mv_offers = extract_mv_offers(offer_str)
     gof_offers = extract_gof_offers(offer_str)
-
+    print(mv_offers, gof_offers)
     # Get best special offer
     best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
         
@@ -131,5 +133,3 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
-
-
