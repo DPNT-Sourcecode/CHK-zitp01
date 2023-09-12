@@ -147,7 +147,7 @@ def calculate_best_offer(offers, basket):
         if isinstance(offer['offerValue'], str):
             offer_value = price_tble[offer['offerValue']]
         elif len(offer['required']) == 1:
-            productRequired = offer['required'][0]
+            productRequired = list(offer['required'])[0]
             offer_value = (offer['quantity'] * price_tble[productRequired]) - offer['offerValue']
         else:
             productsRequired = offer['required']
@@ -172,7 +172,7 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        requiredProducts = best_offer['required']
+        requiredProducts = list(best_offer['required'])
         if isinstance(best_offer['offerValue'], str):
             total += best_offer['quantity'] * price_tble[requiredProducts[0]]
             basket[best_offer['offerValue']] -= 1
@@ -219,6 +219,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
