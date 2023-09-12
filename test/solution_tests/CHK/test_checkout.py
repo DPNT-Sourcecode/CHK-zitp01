@@ -37,4 +37,3 @@ class TestCheckout():
     
     def test_checkout_with_mv_and_gof_offers(self):
         assert checkout_solution.checkout("EAEBAA") == 210
-
