@@ -131,10 +131,11 @@ def getEligibleOffers(offers, basket):
         for product in offer['required']:
             if product not in basket:
                 requiredProductsExist = False
-                break
+                continue
             else:
                 requiredProductsCount += basket[product]
 
+        print(offer, requiredProductsExist, requiredProductsCount)
         if requiredProductsExist and offer['quantity'] <= requiredProductsCount:
             if isinstance(offer['offerValue'], str):
                 # Check free product exists
@@ -147,7 +148,7 @@ def getEligibleOffers(offers, basket):
 # Calculate best offer value to apply
 def calculate_best_offer(offers, basket):
     offers = getEligibleOffers(offers, basket)
-    print(offers)
+    print(offers, basket)
     best_offer = None
     max_offer_value = 0
     for offer in offers:
@@ -264,5 +265,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
