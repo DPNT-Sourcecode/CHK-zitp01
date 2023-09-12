@@ -46,10 +46,17 @@ def extract_mv_offers(offer_str):
     return offers
 
 # Calculate best offer value to apply
-def calculate_best_offer(mv_offers, gof_offers, quantity, basket):
-    # Get eligible offers
-    mv_offers = list(filter(lambda x: (int(x[0]) <= quantity), mv_offers))
-    gof_offers = list(filter(lambda x: (int(x[0]) <= quantity and x[2] in basket and basket[x[2]] > 0), gof_offers))
+'''
+{
+    B: 2
+    E: 4
+}
+'''
+
+def calculate_best_offer(mv_offers, gof_offers, basket):
+    # Get eligible offers where offer quantity exists in basket
+    mv_offers = list(filter(lambda x: (int(x[0]) <= basket[x[1]]), mv_offers))
+    gof_offers = list(filter(lambda x: (int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
 
     offers = mv_offers + gof_offers
     best_offer = None
@@ -79,7 +86,7 @@ def calculate_total(basket):
     for product, quantity in basket.items():
         # Check if product is eligible for special offers
         if product in offers:
-            best_offer = calculate_best_offer(mv_offers, gof_offers, quantity, basket)
+            best_offer = calculate_best_offer(mv_offers, gof_offers, product, basket)
             
             # Apply best special offer value to total/basket
             while best_offer is not None:
@@ -119,4 +126,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
