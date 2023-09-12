@@ -90,7 +90,8 @@ def calculate_total(basket):
                     else:
                         total += int(best_offer[2])
                         quantity -= int(best_offer[0])
-
+                        print(quantity)
+                    
             # Add price value to total
             total += quantity * price_tble[product]
             quantity -= quantity
@@ -120,4 +121,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
