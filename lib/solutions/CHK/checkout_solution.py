@@ -128,7 +128,6 @@ def getEligibleOffers(offers, basket):
         # Check if required products exist in basket
         requiredProductsExist = True
         requiredProductsCount = 0
-        print(offer['required'])
         for product in offer['required']:
             if product not in basket:
                 requiredProductsExist = False
@@ -163,12 +162,13 @@ def calculate_best_offer(offers, basket):
             productsRequiredValues = [price_tble[product] for product in offer['required']]
             offer_value = 0
             nCount = 0
+            print(productsRequiredValues)
             # Calculate the max value combination of products for offer
             while nCount < offer['quantity'] and len(productsRequiredValues) > 0:
                 maxValue = max(productsRequiredValues)
                 maxIndexValue = productsRequiredValues.index(maxValue)
                 maxValueProduct = offer['required'][maxIndexValue]
-
+                
                 n = 0
                 print(basket[maxValueProduct], maxValueProduct, maxValue, basket)
                 while n < basket[maxValueProduct]:
@@ -271,6 +271,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
