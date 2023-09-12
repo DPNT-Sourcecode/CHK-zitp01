@@ -47,7 +47,7 @@ def calculate_best_offer(offers):
         if offer[2].isalpha():
             offer_value = price_tble[offer[2]]
         else:
-            offer_value = (offer[0] + (offer[1] * price_tble[offer[0]])) - offer[2]
+            offer_value = (int(offer[0]) * price_tble[offer[1]]) - int(offer[2])
 
         # Get max offer value
         if offer_value > max_offer_value:
@@ -107,3 +107,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
