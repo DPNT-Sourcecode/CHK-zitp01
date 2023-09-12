@@ -94,7 +94,7 @@ def extract_offers(offer_str):
     for offer in mv_offers:
         offers.append({
             'quantity': int(offer[0]),
-            'required': [offer[1]], 
+            'required': [offer[1] * int(offer[0])], 
             'offerValue': int(offer[2])
         })
 
@@ -244,3 +244,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
