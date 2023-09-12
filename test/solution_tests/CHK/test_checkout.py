@@ -49,3 +49,9 @@ class TestCheckout():
 
     def test_checkout_with_mp_offers(self):
         assert checkout_solution.checkout("FFF") == 20
+
+    def test_checkout_with_invalid_mp_offers(self):
+        assert checkout_solution.checkout("FF") == 20
+
+    def test_checkout_with_mp_and_gof_offers(self):
+        assert checkout_solution.checkout("FFEFE") == 100
