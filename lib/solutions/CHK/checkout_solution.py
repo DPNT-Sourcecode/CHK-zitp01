@@ -219,7 +219,3 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
-
-
-
-
