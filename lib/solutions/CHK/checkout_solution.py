@@ -12,6 +12,7 @@ Our price table and offers:
 | E    | 40    | 2E get one B free      |
 +------+-------+------------------------+
 '''
+
 # Define price and special offers
 price_tble = {
     'A': 50,
