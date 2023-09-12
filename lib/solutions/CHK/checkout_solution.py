@@ -38,10 +38,10 @@ def calculate_total(basket):
             offer_str = offers[product]
             offer = extractOffer(offer_str)
             # Check quantity matches offer
-            while offer is not None and quantity >= offer[0]:
+            while offer is not None and quantity >= int(offer[0]):
                 # Add special offer value to total
-                total += quantity[2]
-                quantity -= offer[0]
+                total += int(offer[2])
+                quantity -= int(offer[0])
 
         # Add price value to total
         total += quantity * price_tble[product]
