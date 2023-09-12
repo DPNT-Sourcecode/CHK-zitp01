@@ -58,3 +58,10 @@ class TestCheckout():
 
     def test_checkout_with_mv_mp_and_gof_offers(self):
         assert checkout_solution.checkout("FAAFEBBFAE") == 260
+
+    def test_checkout_with_broaded_product_offers1(self):
+        assert checkout_solution.checkout("UUU") == 120
+
+    def test_checkout_with_broaded_product_offers2(self):
+        assert checkout_solution.checkout("QQRRQNNMRYNRY") == 350
+    
