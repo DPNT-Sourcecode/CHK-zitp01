@@ -97,17 +97,13 @@ def extract_offers(offer_str):
             'required': [offer[1]], 
             'offerValue': int(offer[2])
         })
-    
-    for offer in bundle_offers:
-        print(offer[1])
 
     for offer in gof_offers:
         if offer[1] == offer[2]:
-            price = int(offer[0]) * price_tble[offer[1]]
             offers.append({
                 'quantity': int(offer[0])+1,
                 'required': [offer[1]],
-                'offerValue': price
+                'offerValue': int(offer[0]) * price_tble[offer[1]]
             })
         else:
             offers.append({
