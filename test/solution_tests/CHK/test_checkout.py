@@ -29,11 +29,20 @@ class TestCheckout():
     def test_checkout_with_mv_offers2(self):
         assert checkout_solution.checkout("AAABDABAB") == 290
 
-    def test_checkout_with_gof_offers(self):
+    def test_checkout_with_gof_offers1(self):
         assert checkout_solution.checkout("EE") == 80
 
-    def test_checkout_with_gof_offers(self):
+    def test_checkout_with_gof_offers2(self):
         assert checkout_solution.checkout("EEB") == 80
+
+    def test_checkout_with_gof_offers3(self):
+        assert checkout_solution.checkout("BEBEEE") == 160
+
+    def test_checkout_with_gof_offers4(self):
+        assert checkout_solution.checkout("ABCDEABCDE") == 280
+
+    def test_checkout_with_gof_offers5(self):
+        assert checkout_solution.checkout("CCADDEEBBA") == 280
     
     def test_checkout_with_mv_and_gof_offers(self):
         assert checkout_solution.checkout("EAEBAA") == 210
