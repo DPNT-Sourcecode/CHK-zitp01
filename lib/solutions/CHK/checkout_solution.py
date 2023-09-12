@@ -116,7 +116,7 @@ def extract_offers(offer_str):
     for offer in bundle_offers:
         offers.append({
             'quantity': int(offer[0]),
-            'required': offer[1].split(","),
+            'required': sorted(offer[1].split(","), key = lambda x: price_tble[x], reverse=True),
             'offerValue': int(offer[2])
         })
 
@@ -159,6 +159,7 @@ def calculate_best_offer(offers, basket):
         # Group offer
         else:
             productsRequired = []
+            print(offer['required'])
             productsRequiredValues = [price_tble[product] for product in offer['required']]
             offer_value = 0
             nCount = 0
