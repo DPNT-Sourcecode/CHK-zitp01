@@ -64,7 +64,13 @@ class TestCheckout():
 
     def test_checkout_with_group_discounts(self):
         assert checkout_solution.checkout("STXXYZ") == 90
-        
+
+    def test_checkout_with_group_discounts2(self):
+        assert checkout_solution.checkout("STXXYZXX") == 124
+
+    def test_checkout_with_no_group_discounts2(self):
+        assert checkout_solution.checkout("ST") == 40
+
     '''def test_checkout_with_broaded_product_offers2(self):
         assert checkout_solution.checkout("QQRRQNNMRYNRY") == 400
     '''
