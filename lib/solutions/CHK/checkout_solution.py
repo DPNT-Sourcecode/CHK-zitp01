@@ -52,8 +52,10 @@ def calculate_total(basket):
 # skus = unicode string
 def checkout(skus):
     # Validate legal input
-    if not isinstance(skus, str) or not skus.isalpha():
+    if not isinstance(skus, str)and not skus.isalpha() and len(skus) > 0:
         return -1
+    if len(skus) == 0:
+        return 0
     
     basket = {}
     for product in skus:
@@ -68,3 +70,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+

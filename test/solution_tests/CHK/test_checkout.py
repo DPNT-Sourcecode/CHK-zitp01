@@ -8,7 +8,7 @@ class TestCheckout():
     def test_checkout(self):
         assert checkout_solution.checkout("ABC") == 100
 
-    def test_checkout_empty(self):
+    def test_checkout_empty_basket(self):
         assert checkout_solution.checkout("") == 0
 
     def test_checkout_with_duplicates(self):
