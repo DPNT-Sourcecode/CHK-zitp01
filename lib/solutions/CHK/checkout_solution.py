@@ -95,7 +95,7 @@ def extract_offers(offer_str):
         offers.append({
             'quantity': offer[0],
             'required': offer[1], 
-            'offerValue': offer[2]
+            'offerValue': int(offer[2])
         })
     
     for offer in bundle_offers:
@@ -108,7 +108,7 @@ def extract_offers(offer_str):
 
     for offer in gof_offers:
         if offer[1] == offer[2]:
-            price = str(int(offer[0]) * price_tble[offer[1]])
+            price = int(offer[0]) * price_tble[offer[1]]
             offers.append({
                 'quantity': str(int(offer[0])+1),
                 'required': offer[1],
@@ -138,16 +138,16 @@ def calculate_best_offer(offers, basket):
     offers = getEligibleOffers(offers, basket)
     best_offer = None
     max_offer_value = 0
-    for [q, p, val] in offers:
-        if val.isalpha():
-            offer_value = price_tble[val]
+    for offer in offers:
+        if isinstance(offer['offerValue'], str):
+            offer_value = price_tble[offer['offerValue']]
         else:
-            offer_value = (int(q) * price_tble[p]) - int(val)
+            offer_value = (offer['quantity'] * price_tble[offer['required']]) - offer['offerValue']
 
         # Get max offer value
         if offer_value > max_offer_value:
             max_offer_value = offer_value
-            best_offer = [q, p, val]
+            best_offer = offer
 
     return best_offer
 
@@ -208,5 +208,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
