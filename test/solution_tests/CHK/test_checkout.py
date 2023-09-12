@@ -21,7 +21,7 @@ class TestCheckout():
         assert checkout_solution.checkout("AAAAAAAAA") == 380
 
     def test_checkout_with_duplicates4(self):
-        assert checkout_solution.checkout("AAAAAAAAAA") == 450 
+        assert checkout_solution.checkout("AAAAAAAAAA") == 400 
 
     def test_checkout_with_mv_offers1(self):
         assert checkout_solution.checkout("AAABDBB") == 220

@@ -85,13 +85,6 @@ def calculate_total(basket):
             
             # Apply best special offer value to total/basket
             while best_offer is not None:
-                # Remove from eligible offers
-                if best_offer[2].isalpha():
-                    gof_offers = list(filter((lambda x: x[0] != best_offer[0] or x[1] != best_offer[1] or x[2] != best_offer[2]), gof_offers))
-                else:
-                    mv_offers = list(filter((lambda x: x[0] != best_offer[0] or x[1] != best_offer[1] or x[2] != best_offer[2]), mv_offers))
-
-                print(product, quantity, best_offer)
                 if best_offer[2].isalpha():
                     basket[best_offer[2]] -= 1
                 else:
@@ -99,11 +92,10 @@ def calculate_total(basket):
                     quantity -= int(best_offer[0])
 
                 best_offer = calculate_best_offer(mv_offers, gof_offers, quantity, basket)
-                print('after', product, quantity, best_offer)
             
         # Add price value to total
         total += quantity * price_tble[product]
-        print(total)
+
 
     return total
 
