@@ -93,7 +93,7 @@ def extract_offers(offer_str):
     offers = []
     for offer in mv_offers:
         offers.append({
-            'quantity': offer[0],
+            'quantity': int(offer[0]),
             'required': offer[1], 
             'offerValue': int(offer[2])
         })
@@ -110,13 +110,13 @@ def extract_offers(offer_str):
         if offer[1] == offer[2]:
             price = int(offer[0]) * price_tble[offer[1]]
             offers.append({
-                'quantity': str(int(offer[0])+1),
+                'quantity': int(offer[0])+1,
                 'required': offer[1],
                 'offerValue': price
             })
         else:
             offers.append({
-                'quantity': offer[0],
+                'quantity': int(offer[0]),
                 'required': offer[1],
                 'offerValue': offer[2]
             })
@@ -164,8 +164,8 @@ def calculate_total(basket):
     # Apply special offer values to total/basket
     while best_offer is not None:
         product = best_offer[1]
-        if best_offer[2].isalpha():
-            total += int(best_offer[0]) * price_tble[best_offer[1]]
+        if isinstance(best_offer['offerValue'], str):
+            total += best_offer['quantity'] * price_tble[best_offer[1]]
             basket[best_offer[2]] -= 1
             if basket[best_offer[2]] == 0:
                 del basket[best_offer[2]]
@@ -208,6 +208,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
