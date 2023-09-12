@@ -125,9 +125,9 @@ def extract_offers(offer_str):
 def getEligibleOffers(offers, basket):
     result = []
     for offer in offers:
-        if offer[1] in basket and int(offer[0]) <= basket[offer[1]]:
-            if offer[2].isalpha():
-                if offer[2] in basket and basket[offer[2]] > 0:
+        if offer['required'] in basket and int(offer['quantity']) <= basket[offer['required']]:
+            if isinstance(offer['offerValue'], str):
+                if offer['offerValue'] in basket and basket[offer['offerValue']] > 0:
                     result.append(offer)
             else:
                 result.append(offer)
@@ -208,4 +208,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
