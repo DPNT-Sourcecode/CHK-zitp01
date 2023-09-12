@@ -94,7 +94,7 @@ def extract_offers(offer_str):
     for offer in mv_offers:
         offers.append({
             'quantity': int(offer[0]),
-            'required': set([offer[1]]), 
+            'required': [offer[1]], 
             'offerValue': int(offer[2])
         })
     
@@ -106,13 +106,13 @@ def extract_offers(offer_str):
             price = int(offer[0]) * price_tble[offer[1]]
             offers.append({
                 'quantity': int(offer[0])+1,
-                'required': set([offer[1]]),
+                'required': [offer[1]],
                 'offerValue': price
             })
         else:
             offers.append({
                 'quantity': int(offer[0]),
-                'required': set([offer[1]]),
+                'required': [offer[1]],
                 'offerValue': offer[2]
             })
     return offers
@@ -120,6 +120,7 @@ def extract_offers(offer_str):
 def getEligibleOffers(offers, basket):
     result = []
     for offer in offers:
+        # Check if required products exist in basket
         requiredProductsExist = True
         requiredProductsCount = 0
         for product in offer['required']:
@@ -144,14 +145,38 @@ def calculate_best_offer(offers, basket):
     best_offer = None
     max_offer_value = 0
     for offer in offers:
+        # GOF Offer
         if isinstance(offer['offerValue'], str):
             offer_value = price_tble[offer['offerValue']]
+        # Multi-value Offer
         elif len(offer['required']) == 1:
-            productRequired = list(offer['required'])[0]
-            offer_value = (offer['quantity'] * price_tble[productRequired]) - offer['offerValue']
+            productsRequiredValues = [offer['quantity'] * price_tble[product] for product in offer['required']]
+            offer_value = sum(productsRequiredValues) - offer['offerValue']
+        # Group offer
         else:
-            productsRequired = offer['required']
+            productsRequired = []
+            productsRequiredValues = [price_tble[product] for product in offer['required']]
             offer_value = 0
+            nCount = 0
+            # Calculate the max value combination of products for offer
+            while nCount < offer['quantity']:
+                maxValue = max(productsRequiredValues)
+                maxIndexValue = productsRequiredValues.indexOf(maxValue)
+                maxValueProduct = offer['required'][maxIndexValue]
+
+                if maxValueProduct in basket:
+
+                    offer_value += maxValue
+                    productsRequired.append(maxValueProduct)
+                    basket[maxValueProduct] -= 1
+                    nCount += 1
+
+                    # Remove from basket if used up
+                    if basket[maxValueProduct] == 0:
+                        del basket[maxValueProduct]
+
+            offer_value -= offer['offerValue']
+            offer['required'] = productsRequired
 
         # Get max offer value
         if offer_value > max_offer_value:
@@ -173,12 +198,16 @@ def calculate_total(basket):
     # Apply special offer values to total/basket
     while best_offer is not None:
         requiredProducts = list(best_offer['required'])
+        # GOF Offer
         if isinstance(best_offer['offerValue'], str):
             total += best_offer['quantity'] * price_tble[requiredProducts[0]]
+            
+            # Remove free item from basket
             basket[best_offer['offerValue']] -= 1
-            # Remove from basket if quantity is 0
+
             if basket[best_offer['offerValue']] == 0:
                 del basket[best_offer['offerValue']]
+        # Money Value Offer
         else:
             total += best_offer['offerValue']
 
