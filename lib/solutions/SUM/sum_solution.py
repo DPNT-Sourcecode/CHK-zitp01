@@ -1,3 +1,6 @@
-# noinspection PyShadowingBuiltins,PyUnusedLocal
 def compute(x, y):
-    raise NotImplementedError()
+    try:
+        return x + y
+    except:
+        raise Exception("Sum function failed")
+
