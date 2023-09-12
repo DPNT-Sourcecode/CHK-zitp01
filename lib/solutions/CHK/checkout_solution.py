@@ -54,8 +54,8 @@ def extract_mv_offers(offer_str):
 '''
 
 def calculate_best_offer(mv_offers, gof_offers, basket):
-    mv_offers = list(filter(lambda x: (int(x[0]) <= basket[x[1]]), mv_offers))
-    gof_offers = list(filter(lambda x: (int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
+    mv_offers = list(filter(lambda x: (x[0] in basket and int(x[0]) <= basket[x[1]]), mv_offers))
+    gof_offers = list(filter(lambda x: (x[0] in basket and int(x[0]) <= basket[x[1]] and x[2] in basket and basket[x[2]] > 0), gof_offers))
     offers = mv_offers + gof_offers
     best_offer = None
     max_offer_value = 0
@@ -86,6 +86,7 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
+        print(best_offer)
         product = best_offer[1]
         if best_offer[2].isalpha():
             basket[best_offer[2]] -= 1
@@ -96,11 +97,12 @@ def calculate_total(basket):
             quantity -= int(best_offer[0])
 
         # If product quantity is 0
-        if basket[best_offer[1]] == 0:
-            del basket[best_offer[1]]
+        if basket[product] == 0:
+            del basket[product]
 
         best_offer = calculate_best_offer(mv_offers, gof_offers, basket)
 
+    print(basket)
     # Add normal priced items to total
     for product, quantity in basket.items():
         total += quantity * price_tble[product]
@@ -129,4 +131,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
