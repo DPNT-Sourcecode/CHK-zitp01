@@ -14,12 +14,10 @@ Our price table and offers:
 '''
 
 '''
-    - {"method":"checkout","params":["AAAAAAAA"],"id":"CHK_R2_020"}, expected: 330, got: 350
-    - {"method":"checkout","params":["AAAAAAAAA"],"id":"CHK_R2_021"}, expected: 380, got: 400
-    - {"method":"checkout","params":["AAAAAAAAAA"],"id":"CHK_R2_022"}, expected: 400, got: 450
+ - {"method":"checkout","params":["BEBEEE"],"id":"CHK_R2_027"}, expected: 160, got: 205
+ - {"method":"checkout","params":["ABCDEABCDE"],"id":"CHK_R2_038"}, expected: 280, got: 295
+ - {"method":"checkout","params":["CCADDEEBBA"],"id":"CHK_R2_039"}, expected: 280, got: 250
 '''
-
-
 
 # Define price and special offers
 price_tble = {
@@ -74,13 +72,13 @@ def calculate_best_offer(mv_offers, gof_offers, quantity, basket):
 # Returns integer value - total price of products
 def calculate_total(basket):
     total = 0
+    offer_str = ','.join(list(offers.values()))
+    mv_offers = extract_mv_offers(offer_str)
+    gof_offers = extract_gof_offers(offer_str)
+
     for product, quantity in basket.items():
         # Check if product is eligible for special offers
         if product in offers:
-            offer_str = offers[product]
-            mv_offers = extract_mv_offers(offer_str)
-            gof_offers = extract_gof_offers(offer_str)
-
             best_offer = calculate_best_offer(mv_offers, gof_offers, quantity, basket)
             
             # Apply best special offer value to total/basket
@@ -121,3 +119,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
