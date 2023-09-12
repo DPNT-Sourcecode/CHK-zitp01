@@ -120,8 +120,16 @@ def extract_offers(offer_str):
 def getEligibleOffers(offers, basket):
     result = []
     for offer in offers:
+        requiredExists = True
+        requiredCount = 0
+        for p in offer['required']:
+            if p not in basket:
+                requiredExists = False
+                break
+            else:
+                requiredCount += 1
 
-        if offer['required'] in basket and offer['quantity'] <= basket[offer['required']]:
+        if requiredExists and offer['quantity'] <= basket[offer['required']]:
             if isinstance(offer['offerValue'], str):
                 if offer['offerValue'] in basket and basket[offer['offerValue']] > 0:
                     result.append(offer)
@@ -204,3 +212,4 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
