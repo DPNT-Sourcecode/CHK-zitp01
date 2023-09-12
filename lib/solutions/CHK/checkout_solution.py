@@ -10,14 +10,10 @@ Our price table and offers:
 | C    | 20    |                        |
 | D    | 15    |                        |
 | E    | 40    | 2E get one B free      |
+| F    | 10    | 2F get one F free      |
 +------+-------+------------------------+
 '''
 
-'''
- - {"method":"checkout","params":["BEBEEE"],"id":"CHK_R2_027"}, expected: 160, got: 205
- - {"method":"checkout","params":["ABCDEABCDE"],"id":"CHK_R2_038"}, expected: 280, got: 295
- - {"method":"checkout","params":["CCADDEEBBA"],"id":"CHK_R2_039"}, expected: 280, got: 250
-'''
 
 # Define price and special offers
 price_tble = {
@@ -25,12 +21,14 @@ price_tble = {
     'B': 30,
     'C': 20,
     'D': 15,
-    'E': 40
+    'E': 40,
+    'F': 10
 }
 offers = {
     'A': '3A for 130, 5A for 200',
     'B': '2B for 45',
-    'E': '2E get one B free'
+    'E': '2E get one B free',
+    'F': '2F get one F free'
 }
 
 # Return eligible get one free offers - based on product quantity
@@ -132,4 +130,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
