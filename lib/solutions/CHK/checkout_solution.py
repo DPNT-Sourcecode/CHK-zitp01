@@ -200,6 +200,7 @@ def calculate_total(basket):
     extractedOffers = extract_offers(offer_str)
     # Get best special offer
     best_offer = calculate_best_offer(extractedOffers, basket)
+    print(basket)
         
     # Apply special offer values to total/basket
     while best_offer is not None:
@@ -268,6 +269,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
