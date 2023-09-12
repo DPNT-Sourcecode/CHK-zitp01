@@ -1,4 +1,5 @@
 import re
+
 '''
 Our price table and offers: 
 +------+-------+----------------+
@@ -9,7 +10,6 @@ Our price table and offers:
 | C    | 20    |                |
 | D    | 15    |                |
 +------+-------+----------------+
-
 '''
 # Define price and special offers
 price_tble = {
@@ -23,19 +23,31 @@ offers = {
     'B': '2B for 45'
 }
 
+def extractOffer(offer_str):
+    reg_exp = re.compile(r'([0-9]+)([A-Z]) for ([0-9]+)')
+    offer = reg_exp.fullmatch(offer_str)
+    return offer.groups() if offer else None
+
 # basket - dictionary of products and quantity
 # Returns integer value - total price of products
 def calculate_total(basket):
     total = 0
     for product, quantity in basket.items():
         # Check if product qualifies for special offer
-        reg_exp = re.compile(r'[0-9]+[A-Z] for [0-9]+')
         if product in offers:
             offer_str = offers[product]
+            offer = extractOffer(offer_str)
+            # Check quantity matches offer
+            while offer is not None and quantity >= offer[0]:
+                # Add special offer value to total
+                total += quantity[2]
+                quantity -= offer[0]
 
+        # Add price value to total
+        total += quantity * price_tble[product]
+    
+    return total
 
-
-    return
 # noinspection PyUnusedLocal
 # skus = unicode string
 def checkout(skus):
@@ -54,4 +66,5 @@ def checkout(skus):
         else:
             basket[product] = 1
 
-    raise NotImplementedError()
+    total = calculate_total(basket)
+    return total
