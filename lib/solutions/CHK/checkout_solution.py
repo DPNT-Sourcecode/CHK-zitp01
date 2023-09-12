@@ -70,7 +70,7 @@ def calculate_total(basket):
             offer_str = offers[product]
             mv_offers = extract_mv_offers(offer_str, quantity)
             gof_offers = extract_gof_offers(offer_str, quantity)
-            gof_offers = list(filter(lambda x: (x[2] in basket and basket[x[2] > 0]), offers))
+            gof_offers = list(filter(lambda x: (x[2] in basket and basket[x[2]] > 0), gof_offers))
             best_offer = calculate_best_offer(mv_offers + gof_offers)
 
             # Apply best special offer value to total/basket
@@ -108,6 +108,7 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
 
