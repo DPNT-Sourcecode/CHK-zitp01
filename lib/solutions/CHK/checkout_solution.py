@@ -72,20 +72,18 @@ def calculate_total(basket):
             mv_offers = extract_mv_offers(offer_str, quantity)
             gof_offers = extract_gof_offers(offer_str, quantity)
             best_offer = calculate_best_offer(mv_offers + gof_offers)
-            if best_offer == None:
-                print('No offer found')
-                break
-
-            # Apply special offer value to total/basket
-            if best_offer[2].isalpha():
-                basket[product] -= 1
-            else:
-                total += int(best_offer[2])
-                quantity -= int(best_offer[0])
+            if best_offer is not None:
+                # Apply special offer value to total/basket
+                if best_offer[2].isalpha():
+                    basket[product] -= 1
+                else:
+                    total += int(best_offer[2])
+                    quantity -= int(best_offer[0])
 
         # Add price value to total
         total += quantity * price_tble[product]
-    
+        print(total)
+
     return total
 
 # noinspection PyUnusedLocal
@@ -110,5 +108,6 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
 
