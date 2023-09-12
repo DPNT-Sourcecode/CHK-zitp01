@@ -114,7 +114,6 @@ def extract_offers(offer_str):
             })
 
     for offer in bundle_offers:
-        print(offer[1].split(","))
         offers.append({
             'quantity': int(offer[0]),
             'required': offer[1].split(","),
@@ -166,7 +165,7 @@ def calculate_best_offer(offers, basket):
             # Calculate the max value combination of products for offer
             while nCount < offer['quantity']:
                 maxValue = max(productsRequiredValues)
-                maxIndexValue = productsRequiredValues.indexOf(maxValue)
+                maxIndexValue = productsRequiredValues.index(maxValue)
                 maxValueProduct = offer['required'][maxIndexValue]
 
                 if maxValueProduct in basket:
@@ -187,6 +186,7 @@ def calculate_best_offer(offers, basket):
             max_offer_value = offer_value
             best_offer = offer
 
+    print(best_offer)
     return best_offer
 
 
@@ -266,4 +266,5 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
+
 
