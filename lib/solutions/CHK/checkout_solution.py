@@ -163,11 +163,11 @@ def calculate_total(basket):
         
     # Apply special offer values to total/basket
     while best_offer is not None:
-        product = best_offer[1]
+        product = best_offer['required']
         if isinstance(best_offer['offerValue'], str):
-            total += best_offer['quantity'] * price_tble[best_offer['required']]
+            total += best_offer['quantity'] * price_tble[product]
             basket[best_offer['offerValue']] -= 1
-            if basket[best_offer[2]] == 0:
+            if basket[best_offer['offerValue']] == 0:
                 del basket[best_offer['offerValue']]
         else:
             total += best_offer['offerValue']
@@ -190,7 +190,7 @@ def calculate_total(basket):
 # skus = unicode string
 def checkout(skus):
     # Validate legal input
-    if not isinstance(skus, str) and not skus.isalpha() and len(skus) > 0:
+    if (not isinstance(skus, str) or not skus.isalpha()) and len(skus) > 0:
         return -1
     if len(skus) == 0:
         return 0
@@ -208,8 +208,3 @@ def checkout(skus):
 
     total = calculate_total(basket)
     return total
-
-
-
-
-
