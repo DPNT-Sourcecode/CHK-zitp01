@@ -90,8 +90,8 @@ def extract_offers(offer_str):
 
     for offer in gof_offers:
         if offer[1] == offer[2]:
-            price = str(2 * price_tble[offer[1]])
-            offers.append(['3', offer[1], price])
+            price = str(int(offer[0]) * price_tble[offer[1]])
+            offers.append([str(int(offer[0])+1), offer[1], price])
         else:
             offers.append([offer[0], offer[1], offer[2]])
     return offers
